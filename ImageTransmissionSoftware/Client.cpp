@@ -1,13 +1,18 @@
+#include <opencv2/opencv.hpp>
 #include <windows.networking.sockets.h>
 #pragma comment(lib, "Ws2_32.lib")
-
+#include<fstream>
 #include <iostream>
 #include <string>
-#include <opencv2/opencv.hpp>
+
 using namespace std;
 
 int main()
 {
+	ifstream file;
+	file.open("image.jpg", ios::binary);
+
+	
 	//starts Winsock DLLs
 	WSADATA wsaData;
 	if ((WSAStartup(MAKEWORD(2, 2), &wsaData)) != 0) {
