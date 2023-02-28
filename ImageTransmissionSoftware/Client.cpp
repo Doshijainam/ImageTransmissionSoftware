@@ -12,6 +12,16 @@ int main()
 	ifstream file;
 	file.open("image.jpg", ios::binary);
 
+	size_t image_size = 0;
+	file.seekg(0, ios::end);
+	image_size = file.tellg();
+	file.seekg(0, ios::beg);
+
+	
+
+	char* image_data = new char[image_size];
+
+	file.read(image_data, image_size);
 	
 	//starts Winsock DLLs
 	WSADATA wsaData;
@@ -38,6 +48,13 @@ int main()
 		return 0;
 	}
 
+	send(ClientSocket,(char*) &image_size, sizeof(image_size), 0);
+
+	send(ClientSocket, image_data, sizeof(image_data), 0);
+
+	file.close();
+
+	delete[] image_data;
 
 	//closes connection and socket
 	closesocket(ClientSocket);

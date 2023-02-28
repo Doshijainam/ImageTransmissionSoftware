@@ -1,6 +1,7 @@
 #include <windows.networking.sockets.h>
 #include <iostream>
 #include <string>
+#include<fstream>
 #include <opencv2/opencv.hpp>
 
 #pragma comment(lib, "Ws2_32.lib")
@@ -55,7 +56,29 @@ int main()
 
 	cout << "Connection Established" << endl;
 
+	size_t image_size = 0;
 
+	recv(ServerSocket, (char*)&image_size, sizeof(image_size), 0);
+
+	char* image_data = new char[image_size];
+
+	size_t total_received = 0;
+
+	while (total_received < image_size)
+	{
+		size_t received = recv(ServerSocket, image_data, sizeof(image_data), 0);
+
+		total_received += received;
+		
+	}
+
+	ofstream file;
+	file.open("output.jpg", ios::binary);
+
+	file.write(image_data, image_size);
+	file.close();
+
+	delete[] image_data;
 
 	closesocket(ConnectionSocket);	//closes incoming socket
 	closesocket(ServerSocket);	    //closes server socket	
